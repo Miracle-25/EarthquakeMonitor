@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>操作地震台</title>
+    <style type="text/css">
+        .form{position: absolute;/*绝对定位*/
+        width: 300px;
+        height: 200px;}
+
+    </style>
+</head>
+<body>
+
+<!--插入地震数据-->
+<form method="post" th:action="@{/getInsert}" style="float:left; margin:20px">
+    <div>
+        <label> 震级:</label>
+        <input type="text" th:value="${magnitude!=null?magnitude:''}"
+        id="magnitude" name="magnitude" placeholder="please enter magnitude" required>
+    </div>
+    <div>
+        <label> 经度:</label>
+        <input type="text" th:value="${latitude!=null?latitude:''}"
+               id="latitude" name="latitude" placeholder="please enter latitude" required>
+    </div>
+    <div>
+        <label> 纬度:</label>
+        <input type="text" th:value="${longitude!=null?longitude:''}"
+               id="longitude" name="longitude" placeholder="please enter longitude" required>
+    </div>
+    <div>
+        <label> 地区:</label>
+        <input type="text" th:value="${ob_earth!=null?ob_earth:''}"
+               id="ob_earth" name="ob_earth" placeholder="please enter ob_earth" required>
+    </div>
+    <div>
+        <button type="submit" >保存</button>
+    </div>
+</form>
+<br>
+
+<!--插入控制台数据-->
+<form method="post" th:action="@{/getInsertOb}" style="float:left; margin:20px">
+    <div>
+        <label>名称: </label>
+        <input type="text" th:value="${name!=null?name:''}"
+               id="name" name="name" placeholder="Please enter a name" required>
+    </div>
+    <div>
+        <label>国家: </label>
+        <input type="text" th:value="${country!=null?country:''}"
+               id="country" name="country" placeholder="Please enter a name" required>
+    </div>
+    <div>
+        <label>设置日期:</label>
+        <input type="text" th:value="${year!=null?year:''}"
+               id="year" name="year" placeholder="Please enter a year" required>
+    </div>
+    <div>
+        <button type="submit" >保存</button>
+    </div>
+</form>
+<br>
+
+<!--查询最大震级-->
+<form method="get" th:action="@{/getMaxMagnitude}" style="float: left; margin:20px">
+    <div>
+    <a type="submit" th:href="@{/getMaxMagnitude}" >查询最大地震</a>
+</div>
+    <div>
+        <u  th:utext="${max!=null?max.getMagnitude():'magnitude'}">magnitude</u>
+<!--        magnitude,latitude,longitude,year_earth,ob_earth-->
+    </div>
+</form>
+<br>
+
+<form method="post" th:action="@{/getNum}" style="float:left; margin:20px">
+<div>
+    <label> 输入一个震级:</label>
+    <input type="text" th:value="${num!=null?num:''}" name="num" id="num" value="" placeholder="0.0" />
+</div>
+    <button type="submit" >上传</button>
+        <li  th:each="map:${earthquake}" style="list-style: none">
+            <div>
+                <label>  magnitude: </label>
+                <u th:utext="${map.Earthquake.getMagnitude()}">Magnitude</u>
+                <label>  Observatory: </label>
+            <u th:utext="${map.Earthquake.getOb_earth()}">Ob</u>
+            </div>
+        </li>
+</form>
+
+
+<form method="get" th:action="@{/getavg}" style="float:left; margin:20px">
+    <div>
+    <a type="submit" th:href="@{/getavg}">观测台最大平均震级</a>
+    </div>
+    <div>
+        <u th:utext="${avg!=null?avg:'maxAvg'}">maxAvg</u>
+    </div>
+</form>
+
+
+</body>
+</html>

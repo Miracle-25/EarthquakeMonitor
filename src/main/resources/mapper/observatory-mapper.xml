@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.earthquake.demo.Dao.ObservatoryMapper">
+
+    <resultMap id="obmap" type="Observatory">
+        <id column="id" property="id"/>
+        <result column="name" property="name" />
+        <result column="country" property="country" />
+        <result column="year" property="year" />
+    </resultMap>
+
+    <sql id="selectFields">
+        id_o,name,country,year
+    </sql>
+    <select id="selectId" resultMap="obmap">
+        select <include refid="selectFields"></include>
+        from observatory
+        where id_o = #{id_o}
+    </select>
+
+    <select id="countAvg" resultType="double">
+        select max(avgmag) as maxavg from
+        ( select avg(earthquake.magnitude) as avgmag from observatory
+        inner join earthquake
+        on earthquake.ob_earth=observatory.name
+        group by observatory.name )
+        together
+    </select>
+
+    <select id="insertObservatory" resultType="Observatory">
+        insert into observatory values (null ,#{name},#{country},#{year})
+    </select>
+
+</mapper>

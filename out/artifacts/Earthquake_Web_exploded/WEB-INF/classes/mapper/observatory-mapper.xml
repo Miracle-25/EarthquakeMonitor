@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.earthquake.demo.Dao.ObservatoryMapper">
+
+    <sql id="selectFields">
+        id_o,name,country,year
+    </sql>
+    <select id="selectId" resultType="Observatory">
+        select <include refid="selectFields"></include>
+        from observatory
+        where id_o = #{id_o}
+    </select>
+
+    <select id="countAvg" resultType="double">
+        select avg(earthquake.magnitude) as Average
+        from observatory
+        inner join earthquake on earthquake.ob_earth=observatory.name
+        where observatory.name = #{ob}
+    </select>
+
+    <select id="insertObservatory" resultType="Observatory">
+        insert into observatory values (null ,#{name},#{country},#{year})
+    </select>
+
+</mapper>

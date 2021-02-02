@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.earthquake.demo.Dao.EarthquakeMapper">
+
+    <sql id="selectFields">
+        id,magnitude,latitude,longitude,year_earth,ob_earth
+    </sql>
+
+    <resultMap id="earthmap" type="Earthquake">
+        <id column="id" property="id"/>
+        <result column="ob_earth" property="ob_earth" />
+    </resultMap>
+
+    <select id="selectMagnitude" resultMap="earthmap">
+        select <include refid="selectFields"></include>
+        from earthquake
+        where magnitude = #{magnitude}
+    </select>
+    <select id="selectMax" resultMap="earthmap">
+        select <include refid="selectFields"></include>
+        from earthquake
+        where magnitude = (select max(magnitude) from earthquake)
+    </select>
+    <select id="selectTargetMag" resultMap="earthmap">
+        select <include refid="selectFields"></include>
+        from earthquake
+        where magnitude > #{num}
+    </select>
+    <select id="insertEarthquake" resultType="Earthquake">
+        insert into earthquake values (null ,#{magnitude},#{latitude},#{longitude},now(),#{ob_earth})
+    </select>
+
+<!--    <select id="selectMagnitude" resultType="Earthquake">-->
+<!--        select <include refid="selectFields"></include>-->
+<!--        from earthquake-->
+<!--        where magnitude = #{magnitude}-->
+<!--    </select>-->
+<!--    <select id="selectMax" resultType="Earthquake">-->
+<!--        select <include refid="selectFields"></include>-->
+<!--        from earthquake-->
+<!--        where magnitude = (select max(magnitude) from earthquake)-->
+<!--    </select>-->
+<!--    <select id="selectTargetMag" resultType="Earthquake">-->
+<!--        select <include refid="selectFields"></include>-->
+<!--        from earthquake-->
+<!--        where magnitude > #{num}-->
+<!--    </select>-->
+<!--    <select id="insertEarthquake" resultType="Earthquake">-->
+<!--        insert into earthquake values (null ,#{magnitude},#{latitude},#{longitude},now(),#{ob_earth})-->
+<!--    </select>-->
+
+</mapper>
